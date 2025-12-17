@@ -1,20 +1,23 @@
-````md
+
 # 🖧 Configuration réseau & routage des VM (LAN)
 
 ## 🎯 Objectif
+
 Permettre aux VM des réseaux internes (ens19, ens20) :
-- d’accéder à Internet via ens18
-- d’avoir un routage fonctionnel
-- avec IP forwarding + NAT iptables
+
+* d’accéder à Internet via ens18
+* d’avoir un routage fonctionnel
+* avec IP forwarding + NAT iptables
 
 ---
 
 ## 1️⃣ Vérification et activation de l’IP Forwarding
 
 ### Vérifier l’état actuel
+
 ```bash
 cat /proc/sys/net/ipv4/ip_forward
-````
+```
 
 ### Si la valeur est `0`
 
@@ -28,7 +31,7 @@ Ou via éditeur :
 nano /proc/sys/net/ipv4/ip_forward
 ```
 
-➡ remplacer `0` par `1`
+➡ Remplacer `0` par `1`
 
 ---
 
@@ -128,13 +131,13 @@ ifdown ens20 && ifup ens20
 ### NAT
 
 ```bash
-/usr/sbin/iptables -t nat -L -n -v
+iptables -t nat -L -n -v
 ```
 
 ### Forwarding
 
 ```bash
-/usr/sbin/iptables -L FORWARD -n -v
+iptables -L FORWARD -n -v
 ```
 
 ---
@@ -172,8 +175,8 @@ iptables -A FORWARD -i ens18 -o ens20 -m state --state RELATED,ESTABLISHED -j AC
 ### Règles actives
 
 ```bash
-/usr/sbin/iptables -t nat -L -n -v
-/usr/sbin/iptables -L FORWARD -n -v
+iptables -t nat -L -n -v
+iptables -L FORWARD -n -v
 ```
 
 ### Tests réseau
@@ -195,6 +198,3 @@ ping 10.3.23.254
 * Forwarding LAN ↔ WAN autorisé
 * Accès réseau fonctionnel pour les VM
 
-```
-
----
